@@ -40,3 +40,7 @@ $ npm run test:cov
 ## Swagger
 
 Browse to `/api` to get the Swagger UI
+
+## Compodoc
+
+$ npx compodoc -p tsconfig.json -s
