@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { CreateOrderDto, UpdateOrderDto } from './dto'
-import { AppLogger } from '../providers/logger.service'
+import { AppLogger } from '../logger/logger.service'
 
 @Injectable()
 export class OrderService {
