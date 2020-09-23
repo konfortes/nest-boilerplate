@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common'
 import { CreateOrderDto, UpdateOrderDto } from './dto'
+import { AppLogger } from '../providers/logger.service'
 
 @Injectable()
 export class OrderService {
+  constructor(private logger: AppLogger) {
+    this.logger.setContext('OrderService')
+  }
+
   async create(order: CreateOrderDto): Promise<string> {
     return 'created'
   }
 
   async list(): Promise<string> {
+    this.logger.log('listing orders')
     return 'here are your orders!'
   }
 
@@ -20,6 +26,7 @@ export class OrderService {
   }
 
   async delete(id: string): Promise<string> {
+    this.logger.warn(`deleting order ${id}`)
     return `deleted ${id}`
   }
 }
