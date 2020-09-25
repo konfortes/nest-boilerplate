@@ -1,19 +1,20 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Inject } from '@nestjs/common'
 import { CreateOrderDto, UpdateOrderDto } from './dto'
-import { AppLogger } from '../logger/logger.service'
+import { Logger } from 'winston'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 
 @Injectable()
 export class OrderService {
-  constructor(private logger: AppLogger) {
-    this.logger.setContext('OrderService')
-  }
+  constructor(
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   async create(order: CreateOrderDto): Promise<string> {
     return 'created'
   }
 
   async list(): Promise<string> {
-    this.logger.log('listing orders')
+    this.logger.info('listing orders')
     return 'here are your orders!'
   }
 

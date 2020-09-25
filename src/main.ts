@@ -1,11 +1,11 @@
-import { AppLogger } from './logger/logger.service'
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger: false })
-  app.useLogger(new AppLogger())
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER))
 
   const options = new DocumentBuilder()
     .setTitle('hello-nest')
