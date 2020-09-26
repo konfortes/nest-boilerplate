@@ -5,10 +5,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 
 @Injectable()
 export class OrderService {
-  constructor(
-    // @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-    @Inject(WINSTON_MODULE_PROVIDER) private logger: Logger,
-  ) {
+  constructor(@Inject(WINSTON_MODULE_PROVIDER) private logger: Logger) {
     this.logger = logger.child({ loggerName: OrderService.name })
   }
 
@@ -17,7 +14,6 @@ export class OrderService {
   }
 
   async list(): Promise<string> {
-    this.logger.info('listing orders')
     return 'here are your orders!'
   }
 
