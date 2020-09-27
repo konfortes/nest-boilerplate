@@ -24,7 +24,8 @@ export class OrderController {
 
   // TODO: type
   @Put(':id')
-  update(@Param('id') id: string, @Body() order: UpdateOrderDto): Promise<any> {
+  update(@Param('id') id: number, @Body() order: UpdateOrderDto): Promise<any> {
+    order.id = id
     return this.orderService.update(order)
   }
 
