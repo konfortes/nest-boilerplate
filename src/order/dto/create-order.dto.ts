@@ -1,5 +1,5 @@
 export class CreateOrderDto {
-  merchant_url: string
-  customer_name: string
+  merchantUrl: string
+  customerName: string
   amount: number
 }
