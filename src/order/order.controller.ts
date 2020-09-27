@@ -1,3 +1,4 @@
+import { Order } from './entities/order.entity'
 import { CreateOrderDto, UpdateOrderDto } from './dto'
 import { Body, Controller, Get, Param, Post, Put, Delete } from '@nestjs/common'
 import { OrderService } from './order.service'
@@ -7,27 +8,29 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  create(@Body() order: CreateOrderDto): Promise<string> {
+  create(@Body() order: CreateOrderDto): Promise<Order> {
     return this.orderService.create(order)
   }
 
   @Get()
-  list(): Promise<string> {
+  list(): Promise<Order[]> {
     return this.orderService.list()
   }
 
   @Get(':id')
-  get(@Param('id') id: string): Promise<string> {
+  get(@Param('id') id: string): Promise<Order> {
     return this.orderService.get(id)
   }
 
+  // TODO: type
   @Put(':id')
-  update(@Param('id') id: string, @Body() order: UpdateOrderDto) {
+  update(@Param('id') id: string, @Body() order: UpdateOrderDto): Promise<any> {
     return this.orderService.update(order)
   }
 
+  // TODO: type
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<any> {
     return this.orderService.delete(id)
   }
 }

@@ -1,3 +1,4 @@
+import { Order } from '../order/entities/order.entity'
 import { ConfigService } from '@nestjs/config'
 import { Injectable } from '@nestjs/common'
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm'
@@ -13,8 +14,8 @@ export class DbConfigService implements TypeOrmOptionsFactory {
       username: this.configService.get<string>('database.user'),
       password: this.configService.get<string>('database.password'),
       database: this.configService.get<string>('database.name'),
-      // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      // synchronize: true,
+      autoLoadEntities: true,
+      synchronize: true,
     }
   }
 }
