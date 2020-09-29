@@ -44,3 +44,23 @@ Browse to `/api` to get the Swagger UI
 ## Compodoc
 
 $ npx compodoc -p tsconfig.json -s
+
+## API
+
+```bash
+
+# create
+http localhost:3000/orders merchantUrl=booking.com customerName=konfortes amount=73
+
+# list
+http localhost:3000/orders
+
+# get
+http localhost:3000/orders/1
+
+# update
+http PUT localhost:3000/orders/1 amount=37
+
+# delete
+http DELETE localhost:3000/orders/1
+```
