@@ -1,5 +1,5 @@
 export class UpdateOrderDto {
-  id: number
+  id: string
   merchantUrl: string
   customerName: string
   amount: number

@@ -1,7 +1,7 @@
 import { Order } from './entities/order.entity'
 import { Injectable, Inject } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { DeleteResult, Repository, UpdateResult } from 'typeorm'
 import { CreateOrderDto, UpdateOrderDto } from './dto'
 import { Logger } from 'winston'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -28,11 +28,11 @@ export class OrderService {
     return this.ordersRepository.findOne(id)
   }
 
-  async update(order: UpdateOrderDto): Promise<any> {
+  async update(order: UpdateOrderDto): Promise<UpdateResult> {
     return this.ordersRepository.update(order.id, order)
   }
 
-  async delete(id: string): Promise<any> {
+  async delete(id: string): Promise<DeleteResult> {
     this.logger.warn(`deleting order ${id}`)
     return this.ordersRepository.delete(id)
   }

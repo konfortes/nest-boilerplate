@@ -39,17 +39,25 @@ export class OrderController {
 
   @Put(':id')
   @HttpCode(204)
-  update(
-    @Param('id') id: number,
+  async update(
+    @Param('id') id: string,
     @Body() order: UpdateOrderDto,
   ): Promise<void> {
     order.id = id
-    return this.orderService.update(order)
+
+    const result = await this.orderService.update(order)
+
+    if (result.affected == 0) {
+      throw new NotFoundException(id, `order ${id} could not be found`)
+    }
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string): Promise<void> {
-    return this.orderService.delete(id)
+  async delete(@Param('id') id: string): Promise<void> {
+    const result = await this.orderService.delete(id)
+    if (result.affected == 0) {
+      throw new NotFoundException(id, `order ${id} could not be found`)
+    }
   }
 }
