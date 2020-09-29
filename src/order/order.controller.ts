@@ -1,6 +1,16 @@
 import { Order } from './entities/order.entity'
 import { CreateOrderDto, UpdateOrderDto } from './dto'
-import { Body, Controller, Get, Param, Post, Put, Delete } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Delete,
+  HttpCode,
+  NotFoundException,
+} from '@nestjs/common'
 import { OrderService } from './order.service'
 
 @Controller('orders')
@@ -18,20 +28,28 @@ export class OrderController {
   }
 
   @Get(':id')
-  get(@Param('id') id: string): Promise<Order> {
-    return this.orderService.get(id)
+  async get(@Param('id') id: string): Promise<Order> {
+    const order = await this.orderService.get(id)
+    if (!order) {
+      throw new NotFoundException(id, `order ${id} could not be found`)
+    }
+
+    return order
   }
 
-  // TODO: type
   @Put(':id')
-  update(@Param('id') id: number, @Body() order: UpdateOrderDto): Promise<any> {
+  @HttpCode(204)
+  update(
+    @Param('id') id: number,
+    @Body() order: UpdateOrderDto,
+  ): Promise<void> {
     order.id = id
     return this.orderService.update(order)
   }
 
-  // TODO: type
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<any> {
+  @HttpCode(204)
+  remove(@Param('id') id: string): Promise<void> {
     return this.orderService.delete(id)
   }
 }

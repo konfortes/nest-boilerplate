@@ -25,15 +25,13 @@ export class OrderService {
   }
 
   async get(id: string): Promise<Order> {
-    return this.ordersRepository.findOneOrFail(id)
+    return this.ordersRepository.findOne(id)
   }
 
-  // TODO: type
   async update(order: UpdateOrderDto): Promise<any> {
     return this.ordersRepository.update(order.id, order)
   }
 
-  // TODO: type
   async delete(id: string): Promise<any> {
     this.logger.warn(`deleting order ${id}`)
     return this.ordersRepository.delete(id)
