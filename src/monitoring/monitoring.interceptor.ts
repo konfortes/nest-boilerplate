@@ -20,8 +20,11 @@ export class MonitoringInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap(() => {
         const duration = Date.now() - before
+        const request = context.switchToHttp().getRequest<Request>()
+        const url = request.url
+        const method = request.method
         // TODO: to seconds?
-        this._histogramMetric.observe(duration)
+        this._histogramMetric.observe({ url, method }, duration / 1000)
       }),
     )
   }

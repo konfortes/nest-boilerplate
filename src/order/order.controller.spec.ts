@@ -1,4 +1,4 @@
-import { Order } from './entities/order.entity'
+import { MonitoringModule } from './../monitoring/monitoring.module'
 import { Test } from '@nestjs/testing'
 import { OrderController } from './order.controller'
 import { OrderService } from './order.service'
@@ -6,7 +6,6 @@ import { NotFoundException } from '@nestjs/common'
 
 describe('OrderController', () => {
   let orderController: OrderController
-  // let orderService: OrderService
   const dummyOrder = {
     id: 1,
     merchantUrl: 'foo',
@@ -29,6 +28,8 @@ describe('OrderController', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
+      // TODO: imports: [MonitoringModule] can be removed once MonitoringInterceptors becomes global
+      imports: [MonitoringModule],
       controllers: [OrderController],
       providers: [OrderService],
     })
@@ -36,7 +37,6 @@ describe('OrderController', () => {
       .useValue(mockedOrderService)
       .compile()
 
-    // orderService = moduleRef.get<OrderService>(OrderService)
     orderController = moduleRef.get<OrderController>(OrderController)
   })
 
@@ -54,8 +54,6 @@ describe('OrderController', () => {
 
   describe('findAll', () => {
     it('should return an array of orders', async () => {
-      // jest.spyOn(orderService, 'list').mockImplementation(async () => expectedResult)
-
       expect(await orderController.list()).toStrictEqual([dummyOrder])
     })
   })
@@ -80,18 +78,18 @@ describe('OrderController', () => {
 
   describe('update', () => {
     it('should update an order and return no response payload', async () => {
-      expect(await orderController.update('1', dummyOrder)).toBeUndefined()
+      expect(await orderController.update(1, dummyOrder)).toBeUndefined()
     })
   })
 
   describe('delete', () => {
     it('should delete an order and return no response payload', async () => {
-      expect(await orderController.delete('1')).toBeUndefined()
+      expect(await orderController.delete(1)).toBeUndefined()
     })
 
     // TODO: make it work
     it.skip('should return 404 for non existing order', async () => {
-      const orderId = '2'
+      const orderId = 2
       const expectedError = new NotFoundException(
         orderId,
         `order ${orderId} could not be found`,
