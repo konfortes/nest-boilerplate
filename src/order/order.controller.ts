@@ -1,3 +1,4 @@
+import { MonitoringInterceptor } from './../monitoring/monitoring.interceptor'
 import { Order } from './entities/order.entity'
 import { CreateOrderDto, UpdateOrderDto } from './dto'
 import {
@@ -10,10 +11,13 @@ import {
   Delete,
   HttpCode,
   NotFoundException,
+  UseInterceptors,
 } from '@nestjs/common'
 import { OrderService } from './order.service'
 
 @Controller('orders')
+// TODO: Global interceptor
+@UseInterceptors(MonitoringInterceptor)
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
