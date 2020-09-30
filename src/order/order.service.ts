@@ -24,7 +24,7 @@ export class OrderService {
     return this.ordersRepository.find()
   }
 
-  async get(id: string): Promise<Order> {
+  async get(id: number): Promise<Order> {
     return this.ordersRepository.findOne(id)
   }
 
@@ -32,7 +32,7 @@ export class OrderService {
     return this.ordersRepository.update(order.id, order)
   }
 
-  async delete(id: string): Promise<DeleteResult> {
+  async delete(id: number): Promise<DeleteResult> {
     this.logger.warn(`deleting order ${id}`)
     return this.ordersRepository.delete(id)
   }

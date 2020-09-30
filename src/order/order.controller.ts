@@ -28,7 +28,7 @@ export class OrderController {
   }
 
   @Get(':id')
-  async get(@Param('id') id: string): Promise<Order> {
+  async get(@Param('id') id: number): Promise<Order> {
     const order = await this.orderService.get(id)
     if (!order) {
       throw new NotFoundException(id, `order ${id} could not be found`)
@@ -40,7 +40,7 @@ export class OrderController {
   @Put(':id')
   @HttpCode(204)
   async update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() order: UpdateOrderDto,
   ): Promise<void> {
     order.id = id
@@ -54,7 +54,7 @@ export class OrderController {
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id: string): Promise<void> {
+  async delete(@Param('id') id: number): Promise<void> {
     const result = await this.orderService.delete(id)
     if (result.affected == 0) {
       throw new NotFoundException(id, `order ${id} could not be found`)

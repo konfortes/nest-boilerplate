@@ -8,7 +8,7 @@ describe('OrderController', () => {
   let orderController: OrderController
   // let orderService: OrderService
   const dummyOrder = {
-    id: '1',
+    id: 1,
     merchantUrl: 'foo',
     customerName: 'bar',
     amount: 2,
@@ -17,13 +17,13 @@ describe('OrderController', () => {
     create: async () => dummyOrder,
     list: async () => [dummyOrder],
     get: async id => {
-      return id === '1' ? dummyOrder : null
+      return id === 1 ? dummyOrder : null
     },
     update: async order => {
-      return order.id === '1' ? { affected: 1 } : { affected: 0 }
+      return order.id === 1 ? { affected: 1 } : { affected: 0 }
     },
     delete: async id => {
-      return id === '1' ? { affected: 1 } : { affected: 0 }
+      return id === 1 ? { affected: 1 } : { affected: 0 }
     },
   }
 
@@ -62,12 +62,12 @@ describe('OrderController', () => {
 
   describe('get', () => {
     it('should get an order', async () => {
-      expect(await orderController.get('1')).toStrictEqual(dummyOrder)
+      expect(await orderController.get(1)).toStrictEqual(dummyOrder)
     })
 
     // TODO: make it work
     it.skip('should return 404 for non existing order', async () => {
-      const orderId = '2'
+      const orderId = 2
       const expectedError = new NotFoundException(
         orderId,
         `order ${orderId} could not be found`,
