@@ -63,22 +63,24 @@ describe('OrderController', () => {
       expect(await orderController.get(1)).toStrictEqual(dummyOrder)
     })
 
-    // TODO: make it work
-    it.skip('should return 404 for non existing order', async () => {
-      const orderId = 2
-      const expectedError = new NotFoundException(
-        orderId,
-        `order ${orderId} could not be found`,
-      )
-      await expect(await orderController.get(orderId)).toThrowError(
-        expectedError,
-      )
+    describe('given non exist order id', () => {
+      it('throws NotFoundException', async () => {
+        await expect(orderController.get(2)).rejects.toThrow(NotFoundException)
+      })
     })
   })
 
   describe('update', () => {
     it('should update an order and return no response payload', async () => {
       expect(await orderController.update(1, dummyOrder)).toBeUndefined()
+    })
+
+    describe('given non exist order id', () => {
+      it('throws NotFoundException', async () => {
+        await expect(orderController.update(2, dummyOrder)).rejects.toThrow(
+          NotFoundException,
+        )
+      })
     })
   })
 
@@ -87,16 +89,12 @@ describe('OrderController', () => {
       expect(await orderController.delete(1)).toBeUndefined()
     })
 
-    // TODO: make it work
-    it.skip('should return 404 for non existing order', async () => {
-      const orderId = 2
-      const expectedError = new NotFoundException(
-        orderId,
-        `order ${orderId} could not be found`,
-      )
-      await expect(await orderController.delete(orderId)).toThrowError(
-        expectedError,
-      )
+    describe('given non exist order id', () => {
+      it('throws NotFoundException', async () => {
+        await expect(orderController.delete(2)).rejects.toThrow(
+          NotFoundException,
+        )
+      })
     })
   })
 })
