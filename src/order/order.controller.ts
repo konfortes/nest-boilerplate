@@ -1,4 +1,5 @@
-import { MonitoringInterceptor } from './../monitoring/monitoring.interceptor'
+import { NR_AGENT } from '../consts'
+import { PrometheusInterceptor } from '../common/prometheus.interceptor'
 import { Order } from './entities/order.entity'
 import { CreateOrderDto } from './dto/create-order.dto'
 import { UpdateOrderDto } from './dto/update-order.dto'
@@ -13,14 +14,18 @@ import {
   HttpCode,
   NotFoundException,
   UseInterceptors,
+  Inject,
 } from '@nestjs/common'
 import { OrderService } from './order.service'
 
 @Controller('orders')
 // TODO: Global interceptor
-@UseInterceptors(MonitoringInterceptor)
+@UseInterceptors(PrometheusInterceptor)
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    @Inject(NR_AGENT) private metricsAgent,
+  ) {}
 
   @Post()
   create(@Body() order: CreateOrderDto): Promise<Order> {
@@ -28,7 +33,7 @@ export class OrderController {
   }
 
   @Get()
-  list(): Promise<Order[]> {
+  async list(): Promise<Order[]> {
     return this.orderService.list()
   }
 
@@ -36,6 +41,10 @@ export class OrderController {
   async get(@Param('id') id: number): Promise<Order> {
     const order = await this.orderService.get(id)
     if (!order) {
+      await this.metricsAgent.recordCustomEvent(
+        'nodejs_service_skeleton_get_not_found',
+        { foo: 'bar' },
+      )
       throw new NotFoundException(id, `order ${id} could not be found`)
     }
 

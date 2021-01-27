@@ -1,4 +1,5 @@
-import { MonitoringModule } from './../monitoring/monitoring.module'
+import { CommonModule } from './../common/common.module'
+
 import { Test } from '@nestjs/testing'
 import { OrderController } from './order.controller'
 import { OrderService } from './order.service'
@@ -29,7 +30,7 @@ describe('OrderController', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       // TODO: imports: [MonitoringModule] can be removed once MonitoringInterceptors becomes global
-      imports: [MonitoringModule],
+      imports: [CommonModule],
       controllers: [OrderController],
       providers: [OrderService],
     })

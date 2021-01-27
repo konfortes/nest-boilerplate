@@ -1,16 +1,31 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Index,
+} from 'typeorm'
 
-@Entity()
+@Entity({ name: 'orders' })
 export class Order {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number
 
-  @Column()
+  @Index()
+  @Column({ name: 'merchant_url' })
   merchantUrl: string
 
-  @Column()
+  @Index()
+  @Column({ name: 'customer_name' })
   customerName: string
 
   @Column({ default: 0 })
   amount: number
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date
 }

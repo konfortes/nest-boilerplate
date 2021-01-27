@@ -1,23 +1,32 @@
-FROM node:12.13-alpine As development
+FROM node:fermium AS builder
 
+# Create app directory
 WORKDIR /usr/src/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
 COPY package*.json ./
-RUN npm install --only=development
+
+RUN npm install
+
+# Use .dockerignore file to exclue folders/files that should not be copy to the image
 COPY . .
+
 RUN npm run build
 
-FROM node:12.13-alpine as production
+RUN npm prune --production
+
+FROM node:fermium-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
-WORKDIR /usr/src/app
-ENV DOCKERIZE_VERSION v0.6.1
-RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-COPY package*.json ./
-RUN npm install --only=production
-COPY . .
-COPY --from=development /usr/src/app/dist ./dist
+
+EXPOSE 3000
 
 CMD ["node", "dist/main"]
