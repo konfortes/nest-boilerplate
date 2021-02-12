@@ -32,19 +32,19 @@ npm run start:prod
 ### Generate a migration
 
 ```bash
-npm run typeorm:migration generate <MIGRATION_NAME>
+npm run migration:generate <MIGRATION_NAME>
 ```
 
 ### Create a migration
 
 ```bash
-npm run typeorm:migration:create <MIGRATION_NAME>
+npm run migration:create <MIGRATION_NAME>
 ```
 
 ### Run migrations
 
 ```bash
-npm run typeorm:migration:run
+npm run migration:run
 ```
 
 ## Test
